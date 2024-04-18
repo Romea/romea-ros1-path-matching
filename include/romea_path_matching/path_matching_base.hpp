@@ -19,66 +19,58 @@
 #include <memory>
 
 // ros
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "nav_msgs/msg/odometry.hpp"
-#include "std_srvs/srv/empty.hpp"
+#include <ros/ros.h>
+#include <nav_msgs/Odometry.h>
+#include <std_srvs/Empty.h>
 
 // romea
-#include "romea_common_utils/publishers/diagnostic_publisher.hpp"
-#include "romea_path_msgs/msg/path_matching_info2_d.hpp"
+#include <romea_common_utils/publishers/diagnostic_publisher.hpp>
+#include <romea_path_msgs/PathMatchingInfo2D.h>
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
 
 class PathMatchingBase
 {
 public:
-  using Odometry = nav_msgs::msg::Odometry;
-  using PathMatchingInfo2D = romea_path_msgs::msg::PathMatchingInfo2D;
-  using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
-  using ResetSrv = std_srvs::srv::Empty;
+  using Odometry = nav_msgs::Odometry;
+  using PathMatchingInfo2D = romea_path_msgs::PathMatchingInfo2D;
+  using ResetSrv = std_srvs::Empty;
 
 public:
-  explicit PathMatchingBase(const rclcpp::NodeOptions & options);
-
+  PathMatchingBase(ros::NodeHandle & nh, ros::NodeHandle & private_nh);
   virtual ~PathMatchingBase() = default;
 
-  rclcpp::node_interfaces::NodeBaseInterface::SharedPtr
-  get_node_base_interface() const;
+  void on_configure();
+  void on_activate();
+  void on_deactivate();
 
   virtual void reset() = 0;
-
-  CallbackReturn on_configure(const rclcpp_lifecycle::State &);
-
-  CallbackReturn on_activate(const rclcpp_lifecycle::State &);
-
-  CallbackReturn on_deactivate(const rclcpp_lifecycle::State &);
 
 protected:
   virtual void timer_callback_() = 0;
 
   virtual void process_odom_(const Odometry & msg) = 0;
 
-  void reset_srv_callback_(ResetSrv::Request::SharedPtr, ResetSrv::Response::SharedPtr);
+  bool reset_srv_callback_(ResetSrv::Request &, ResetSrv::Response &);
 
 protected:
+  ros::NodeHandle & nh_;
+  ros::NodeHandle & private_nh_;
+
   double prediction_time_horizon_ = 0;
   double maximal_research_radius_ = 0;
   double interpolation_window_length_ = 0;
 
   bool is_active_ = false;
 
-  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
-  std::shared_ptr<rclcpp::TimerBase> timer_;
-
-  rclcpp::Subscription<Odometry>::SharedPtr odom_sub_;
-  rclcpp_lifecycle::LifecyclePublisher<PathMatchingInfo2D>::SharedPtr match_pub_;
-  rclcpp::Service<ResetSrv>::SharedPtr reset_srv_;
-
-  std::shared_ptr<StampedPublisherBase<core::DiagnosticReport>> diagnostics_pub_;
+  ros::Subscriber odom_sub_;
+  ros::Publisher match_pub_;
+  ros::Publisher diagnostics_pub_;
+  ros::Timer timer_;
+  ros::ServiceServer reset_srv_;
 };
 
 }  // namespace ros2

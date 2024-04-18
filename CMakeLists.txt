@@ -19,14 +19,20 @@ set(${PROJECT_NAME}_CATKIN_DEPS
     nav_msgs
     # tf2_geometry_msgs
     visualization_msgs
+    std_srvs
 
     romea_common_utils
-    # romea_localisation
+    romea_path_msgs
 )
 
 find_package(catkin REQUIRED COMPONENTS ${${PROJECT_NAME}_CATKIN_DEPS})
+find_package(romea_core_common REQUIRED)
 
-catkin_package(CATKIN_DEPENDS ${${PROJECT_NAME}_CATKIN_DEPS})
+
+catkin_package(
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS ${${PROJECT_NAME}_CATKIN_DEPS}
+)
 
 # find dependencies
 # find_package(ament_cmake REQUIRED)
@@ -45,14 +51,25 @@ catkin_package(CATKIN_DEPENDS ${${PROJECT_NAME}_CATKIN_DEPS})
 # find_package(std_srvs REQUIRED)
 # find_package(diagnostic_updater REQUIRED)
 
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${romea_core_common_INCLUDE_DIRS}
+)
+
 # ---------------- ament ----------------
-# add_library(${PROJECT_NAME} SHARED
-#   src/path_matching_base.cpp
-#   src/path_matching.cpp
-#   src/path_matching_display.cpp
-#   src/path_matching_display_base.cpp
-# )
-#
+add_library(${PROJECT_NAME} SHARED
+  src/path_matching_base.cpp
+  # src/path_matching.cpp
+  # src/path_matching_display.cpp
+  # src/path_matching_display_base.cpp
+)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC
+  romea_core_common::romea_core_common
+)
+
+
 # ament_target_dependencies(${PROJECT_NAME}
 #   rclcpp
 #   rclcpp_components

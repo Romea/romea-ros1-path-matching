@@ -17,13 +17,15 @@
   <depend>tf2_ros</depend>
   <depend>visualization_msgs</depend>
   <depend>diagnostic_updater</depend>
+  <depend>std_srvs</depend>
 
-  <depend>romea_common</depend>
+  <depend>romea_core_common</depend>
+  <depend>romea_core_path</depend>
+  <depend>romea_core_path_matching</depend>
+  <depend>romea_common_msgs</depend>
   <depend>romea_common_utils</depend>
   <depend>romea_path_msgs</depend>
   <depend>romea_path_utils</depend>
-  <depend>romea_core_path</depend>
-  <depend>romea_core_path_matching</depend>
 
   <export>
     <nodelet plugin="${prefix}/nodelet.xml"/>
