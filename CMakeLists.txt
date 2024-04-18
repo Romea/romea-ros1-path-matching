@@ -13,16 +13,15 @@ set(${PROJECT_NAME}_CATKIN_DEPS
     roscpp
     roslib
     nodelet
-    tf2
+    # tf2
     tf2_ros
     # tf2_eigen
     nav_msgs
     # tf2_geometry_msgs
     visualization_msgs
 
-    romea_common
     romea_common_utils
-    romea_localisation
+    # romea_localisation
 )
 
 find_package(catkin REQUIRED COMPONENTS ${${PROJECT_NAME}_CATKIN_DEPS})
@@ -128,5 +127,3 @@ catkin_package(CATKIN_DEPENDS ${${PROJECT_NAME}_CATKIN_DEPS})
 #   #set(ament_cmake_cpplint_FOUND TRUE)
 #   ament_lint_auto_find_test_dependencies()
 # endif()
-
-ament_package()
