@@ -13,29 +13,21 @@
 // limitations under the License.
 
 // std
-#include <string>
 #include <utility>
 
-// romea
+// local
 #include "romea_path_matching/path_matching_display_base.hpp"
-#include "romea_common_utils/qos.hpp"
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
-
-PathMatchingDisplayBase::PathMatchingDisplayBase()
-{
-}
 
 //-----------------------------------------------------------------------------
-void PathMatchingDisplayBase::init(
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node, const std::string & path_frame_id)
+void PathMatchingDisplayBase::init(ros::NodeHandle & nh, const std::string & path_frame_id)
 {
   initMarkers(path_frame_id);
-  marker_pub_ = node->create_publisher<MarkerArray>("~/markers", reliable(1));
-  marker_pub_->on_activate();
+  marker_pub_ = nh.advertise<MarkerArray>("markers", 1);
 }
 
 //-----------------------------------------------------------------------------
@@ -44,8 +36,8 @@ void PathMatchingDisplayBase::initMarkers(const std::string & path_frame_id)
   path_marker_.header.frame_id = path_frame_id;
   path_marker_.ns = "path";
   path_marker_.id = 1;
-  path_marker_.type = visualization_msgs::msg::Marker::SPHERE_LIST;
-  path_marker_.action = visualization_msgs::msg::Marker::ADD;
+  path_marker_.type = visualization_msgs::Marker::SPHERE_LIST;
+  path_marker_.action = visualization_msgs::Marker::ADD;
   path_marker_.pose.orientation.w = 1;
   path_marker_.color.r = .5;
   path_marker_.color.g = .5;
@@ -59,8 +51,8 @@ void PathMatchingDisplayBase::initMarkers(const std::string & path_frame_id)
   curve_marker_.header.frame_id = path_frame_id;
   curve_marker_.ns = "curve";
   curve_marker_.id = 2;
-  curve_marker_.type = visualization_msgs::msg::Marker::SPHERE_LIST;
-  curve_marker_.action = visualization_msgs::msg::Marker::ADD;
+  curve_marker_.type = visualization_msgs::Marker::SPHERE_LIST;
+  curve_marker_.action = visualization_msgs::Marker::ADD;
   curve_marker_.pose.orientation.w = 1;
   curve_marker_.color.r = 1.;
   curve_marker_.color.g = .1;
@@ -72,7 +64,7 @@ void PathMatchingDisplayBase::initMarkers(const std::string & path_frame_id)
   curve_marker_.scale.z = .12;
 
   clear_marker_.header.frame_id = path_frame_id;
-  clear_marker_.action = visualization_msgs::msg::Marker::DELETEALL;
+  clear_marker_.action = visualization_msgs::Marker::DELETEALL;
 }
 
 //-----------------------------------------------------------------------------
@@ -102,11 +94,11 @@ void PathMatchingDisplayBase::load_curve(const core::PathCurve2D & path_curve)
 //-----------------------------------------------------------------------------
 void PathMatchingDisplayBase::publish()
 {
-  visualization_msgs::msg::MarkerArray markers;
+  visualization_msgs::MarkerArray markers;
   markers.markers.push_back(clear_marker_);
   markers.markers.push_back(path_marker_);
   markers.markers.push_back(curve_marker_);
-  marker_pub_->publish(std::move(markers));
+  marker_pub_.publish(std::move(markers));
 }
 
 }  // namespace ros2

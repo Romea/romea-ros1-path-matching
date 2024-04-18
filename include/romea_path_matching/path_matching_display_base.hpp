@@ -15,37 +15,33 @@
 #ifndef ROMEA_PATH_MATCHING__PATH_MATCHING_DISPLAY_BASE_HPP_
 #define ROMEA_PATH_MATCHING__PATH_MATCHING_DISPLAY_BASE_HPP_
 
-// std
-#include <string>
-
 // ros
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "visualization_msgs/msg/marker_array.hpp"
+#include <ros/ros.h>
+#include <visualization_msgs/MarkerArray.h>
 
 // romea
-#include "romea_core_path/PathSection2D.hpp"
-#include "romea_core_path/PathWayPoint2D.hpp"
-#include "romea_core_common/geometry/Pose2D.hpp"
+#include <romea_core_path/PathSection2D.hpp>
+#include <romea_core_path/PathWayPoint2D.hpp>
+#include <romea_core_common/geometry/Pose2D.hpp>
 
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
 
 class PathMatchingDisplayBase
 {
 public:
-  using Marker = visualization_msgs::msg::Marker;
-  using MarkerArray = visualization_msgs::msg::MarkerArray;
+  using Marker = visualization_msgs::Marker;
+  using MarkerArray = visualization_msgs::MarkerArray;
 
 public:
   PathMatchingDisplayBase();
 
   virtual ~PathMatchingDisplayBase() = default;
 
-  void init(rclcpp_lifecycle::LifecycleNode::SharedPtr node, const std::string & path_frame_id);
+  void init(ros::NodeHandle & nh, const std::string & path_frame_id);
 
   void load_curve(const core::PathCurve2D & path_curve);
 
@@ -59,13 +55,13 @@ protected:
 protected:
   bool is_display_activated_ = false;
 
-  rclcpp_lifecycle::LifecyclePublisher<MarkerArray>::SharedPtr marker_pub_;
+  ros::Publisher marker_pub_;
   Marker path_marker_;
   Marker curve_marker_;
   Marker clear_marker_;
 };
 
-}  // namespace ros2
+}  // namespace ros1
 }  // namespace romea
 
 #endif  // ROMEA_PATH_MATCHING__PATH_MATCHING_DISPLAY_BASE_HPP_

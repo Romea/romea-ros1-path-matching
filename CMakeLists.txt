@@ -62,7 +62,7 @@ add_library(${PROJECT_NAME} SHARED
   src/path_matching_base.cpp
   # src/path_matching.cpp
   # src/path_matching_display.cpp
-  # src/path_matching_display_base.cpp
+  src/path_matching_display_base.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
