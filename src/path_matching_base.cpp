@@ -45,9 +45,6 @@ void PathMatchingBase::on_configure()
 
   odom_sub_ = nh_.subscribe("filtered_odom", 1, &PathMatchingBase::process_odom_, this);
 
-  // diagnostics_pub_ = romea::ros2::make_diagnostic_publisher<romea::core::DiagnosticReport>(
-  //   node_, std::string(node_->get_namespace()) + "/" + std::string(node_->get_name()), 1.0);
-
   reset_srv_ = private_nh_.advertiseService("reset", &PathMatchingBase::reset_srv_callback_, this);
 }
 
@@ -55,8 +52,7 @@ void PathMatchingBase::on_configure()
 void PathMatchingBase::on_activate()
 {
   match_pub_ = private_nh_.advertise<PathMatchingInfo2D>("info", 1);
-  // match_pub_->on_activate();
-  // diagnostics_pub_->activate();
+  diagnostics_pub_ = std::make_shared<ReportPublisher>(nh_, private_nh_.getNamespace(), 1.0);
   is_active_ = true;
 }
 
@@ -64,7 +60,7 @@ void PathMatchingBase::on_activate()
 void PathMatchingBase::on_deactivate()
 {
   match_pub_.shutdown();
-  // diagnostics_pub_->deactivate();
+  diagnostics_pub_ = nullptr;
   is_active_ = false;
 }
 

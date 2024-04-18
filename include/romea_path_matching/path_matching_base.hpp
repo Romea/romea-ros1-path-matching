@@ -38,6 +38,7 @@ public:
   using Odometry = nav_msgs::Odometry;
   using PathMatchingInfo2D = romea_path_msgs::PathMatchingInfo2D;
   using ResetSrv = std_srvs::Empty;
+  using ReportPublisher = DiagnosticPublisher<core::DiagnosticReport>;
 
 public:
   PathMatchingBase(ros::NodeHandle & nh, ros::NodeHandle & private_nh);
@@ -68,7 +69,7 @@ protected:
 
   ros::Subscriber odom_sub_;
   ros::Publisher match_pub_;
-  ros::Publisher diagnostics_pub_;
+  std::shared_ptr<ReportPublisher> diagnostics_pub_;
   ros::Timer timer_;
   ros::ServiceServer reset_srv_;
 };
