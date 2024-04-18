@@ -19,12 +19,12 @@
 #include <vector>
 
 // romea
-#include "romea_core_path/Path2D.hpp"
+#include <romea_core_path/Path2D.hpp>
 #include "path_matching_display_base.hpp"
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
 
 class PathMatchingDisplay : public PathMatchingDisplayBase
@@ -40,7 +40,7 @@ protected:
   void add_waypoint_(const core::PathWayPoint2D & point);
 };
 
-}  // namespace ros2
+}  // namespace ros1
 }  // namespace romea
 
 #endif  // ROMEA_PATH_MATCHING__PATH_MATCHING_DISPLAY_HPP_

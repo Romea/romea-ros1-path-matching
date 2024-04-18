@@ -101,5 +101,5 @@ void PathMatchingDisplayBase::publish()
   marker_pub_.publish(std::move(markers));
 }
 
-}  // namespace ros2
+}  // namespace ros1
 }  // namespace romea

@@ -37,8 +37,6 @@ public:
   using MarkerArray = visualization_msgs::MarkerArray;
 
 public:
-  PathMatchingDisplayBase();
-
   virtual ~PathMatchingDisplayBase() = default;
 
   void init(ros::NodeHandle & nh, const std::string & path_frame_id);

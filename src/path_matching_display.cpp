@@ -18,7 +18,7 @@
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
 
 void PathMatchingDisplay::load_waypoints(const WayPoints & path_way_points)
@@ -57,5 +57,5 @@ void PathMatchingDisplay::add_waypoint_(const core::PathWayPoint2D & way_point)
   pt.z = 0.1;
 }
 
-}  // namespace ros2
+}  // namespace ros1
 }  // namespace romea
