@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>romea_path_matching</name>
+  <version>0.0.0</version>
+  <description> ROS nodes to match the robot pose to a path represented by a list of geographic
+    points. </description>
+  <maintainer email="cyrille.pierre@inrae.fr">Cyrille Pierre</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>roslib</depend>
+  <depend>nodelet</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>visualization_msgs</depend>
+  <depend>diagnostic_updater</depend>
+
+  <depend>romea_common</depend>
+  <depend>romea_common_utils</depend>
+  <depend>romea_path_msgs</depend>
+  <depend>romea_path_utils</depend>
+  <depend>romea_core_path</depend>
+  <depend>romea_core_path_matching</depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelet.xml"/>
+  </export>
+</package>
