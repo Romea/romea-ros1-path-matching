@@ -13,16 +13,14 @@ set(${PROJECT_NAME}_CATKIN_DEPS
     roscpp
     roslib
     nodelet
-    # tf2
     tf2_ros
-    # tf2_eigen
     nav_msgs
-    # tf2_geometry_msgs
     visualization_msgs
     std_srvs
 
     romea_common_utils
     romea_path_msgs
+    romea_path_utils
 )
 
 find_package(catkin REQUIRED COMPONENTS ${${PROJECT_NAME}_CATKIN_DEPS})
@@ -59,10 +57,11 @@ include_directories(
 
 # ---------------- ament ----------------
 add_library(${PROJECT_NAME} SHARED
-  src/path_matching_base.cpp
-  # src/path_matching.cpp
   src/path_matching_display.cpp
   src/path_matching_display_base.cpp
+  src/path_matching_base.cpp
+  src/path_matching.cpp
+  src/path_matching_nodelet.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC

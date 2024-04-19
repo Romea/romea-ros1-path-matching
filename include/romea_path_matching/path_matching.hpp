@@ -15,17 +15,11 @@
 #ifndef ROMEA_PATH_MATCHING__PATH_MATCHING_HPP_
 #define ROMEA_PATH_MATCHING__PATH_MATCHING_HPP_
 
-// std
-#include <functional>
-#include <memory>
-#include <string>
-#include <vector>
-
 // ros
-#include "rclcpp/rclcpp.hpp"
+#include <ros/ros.h>
 
 // romea
-#include "romea_core_path_matching/PathMatching.hpp"
+#include <romea_core_path_matching/PathMatching.hpp>
 
 // local
 #include "path_matching_base.hpp"
@@ -33,26 +27,24 @@
 
 namespace romea
 {
-namespace ros2
+namespace ros1
 {
 
 class PathMatching : public PathMatchingBase
 {
 public:
-  explicit PathMatching(const rclcpp::NodeOptions & options);
+  PathMatching(ros::NodeHandle & nh, ros::NodeHandle & private_nh);
 
-  CallbackReturn on_configure(const rclcpp_lifecycle::State &);
-
-  CallbackReturn on_activate(const rclcpp_lifecycle::State &);
-
-  CallbackReturn on_deactivate(const rclcpp_lifecycle::State &);
+  void on_configure();
+  void on_activate();
+  void on_deactivate();
 
   void reset() override;
 
 protected:
   void process_odom_(const Odometry & msg) override;
 
-  void timer_callback_() override;
+  void timer_callback_(const ros::TimerEvent & event) override;
 
 protected:
   PathMatchingDisplay display_;
@@ -63,7 +55,7 @@ protected:
   std::unique_ptr<core::PathMatching> path_matching_;
 };
 
-}  // namespace ros2
+}  // namespace ros1
 }  // namespace romea
 
 #endif  // ROMEA_PATH_MATCHING__PATH_MATCHING_HPP_

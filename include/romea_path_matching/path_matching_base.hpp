@@ -20,6 +20,7 @@
 
 // ros
 #include <ros/ros.h>
+#include <nodelet/nodelet.h>
 #include <nav_msgs/Odometry.h>
 #include <std_srvs/Empty.h>
 
@@ -51,7 +52,7 @@ public:
   virtual void reset() = 0;
 
 protected:
-  virtual void timer_callback_() = 0;
+  virtual void timer_callback_(const ros::TimerEvent & event) = 0;
 
   virtual void process_odom_(const Odometry & msg) = 0;
 
