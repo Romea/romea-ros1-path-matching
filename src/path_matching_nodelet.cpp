@@ -12,12 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// ros
+#include <pluginlib/class_list_macros.h>
+
+// local
 #include "romea_path_matching/path_matching_nodelet.hpp"
 
 namespace romea
 {
 namespace ros1
 {
+
+PathMatchingNodelet::PathMatchingNodelet()
+{
+}
 
 void PathMatchingNodelet::onInit()
 {
@@ -28,3 +36,5 @@ void PathMatchingNodelet::onInit()
 
 }  // namespace ros1
 }  // namespace romea
+
+PLUGINLIB_EXPORT_CLASS(romea::ros1::PathMatchingNodelet, nodelet::Nodelet)

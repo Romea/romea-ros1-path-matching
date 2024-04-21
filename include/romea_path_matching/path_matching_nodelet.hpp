@@ -29,6 +29,8 @@ namespace ros1
 class PathMatchingNodelet : public nodelet::Nodelet
 {
 public:
+  PathMatchingNodelet();
+  virtual ~PathMatchingNodelet()=default;
   void onInit() override;
 
 private:
