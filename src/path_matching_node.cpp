@@ -12,25 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// std
-#include <memory>
-#include <utility>
+#include <ros/ros.h>
+#include <nodelet/loader.h>
 
-// ros
-#include "rclcpp/rclcpp.hpp"
-
-// romea
-#include "romea_path_matching/path_matching.hpp"
-
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
-  auto args = rclcpp::init_and_remove_ros_arguments(argc, argv);
-  rclcpp::NodeOptions options;
-  options.arguments(args);
+  ros::init(argc, argv, "path_matching");
 
-  auto path_matching = std::make_shared<romea::PathMatching>(std::move(options));
-  rclcpp::spin(path_matching->get_node_base_interface());
-
-  rclcpp::shutdown();
-  return 0;
+  nodelet::Loader nodelet;
+  nodelet::M_string remap(ros::names::getRemappings());
+  nodelet::V_string nargv;
+  std::string nodelet_name = ros::this_node::getName();
+  nodelet.load(nodelet_name, "romea_path_matching/PathMatchingNodelet", remap, nargv);
+  ros::spin();
 }

@@ -35,9 +35,9 @@ class PathMatching : public PathMatchingBase
 public:
   PathMatching(ros::NodeHandle & nh, ros::NodeHandle & private_nh);
 
-  void on_configure();
-  void on_activate();
-  void on_deactivate();
+  bool on_configure();
+  bool on_activate();
+  bool on_deactivate();
 
   void reset() override;
 

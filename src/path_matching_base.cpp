@@ -36,7 +36,7 @@ PathMatchingBase::PathMatchingBase(ros::NodeHandle & nh, ros::NodeHandle & priva
 
 
 //-----------------------------------------------------------------------------
-void PathMatchingBase::on_configure()
+bool PathMatchingBase::on_configure()
 {
   private_nh_.param("maximal_researh_radius", maximal_research_radius_, MAXIMAL_REASEARCH_RADIUS);
   private_nh_.param("prediction_time_horizon", prediction_time_horizon_, PREDICTION_TIME_HORIZON);
@@ -46,22 +46,25 @@ void PathMatchingBase::on_configure()
   odom_sub_ = nh_.subscribe("filtered_odom", 1, &PathMatchingBase::process_odom_, this);
 
   reset_srv_ = private_nh_.advertiseService("reset", &PathMatchingBase::reset_srv_callback_, this);
+  return true;
 }
 
 //-----------------------------------------------------------------------------
-void PathMatchingBase::on_activate()
+bool PathMatchingBase::on_activate()
 {
   match_pub_ = private_nh_.advertise<PathMatchingInfo2D>("info", 1);
   diagnostics_pub_ = std::make_shared<ReportPublisher>(nh_, private_nh_.getNamespace(), 1.0);
   is_active_ = true;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
-void PathMatchingBase::on_deactivate()
+bool PathMatchingBase::on_deactivate()
 {
   match_pub_.shutdown();
   diagnostics_pub_ = nullptr;
   is_active_ = false;
+  return true;
 }
 
 //-----------------------------------------------------------------------------

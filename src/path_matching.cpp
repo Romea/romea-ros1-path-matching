@@ -36,19 +36,27 @@ namespace ros1
 PathMatching::PathMatching(ros::NodeHandle & nh, ros::NodeHandle & private_nh)
 : PathMatchingBase(nh, private_nh)
 {
-  on_configure();
-  on_activate();
 }
 
 //-----------------------------------------------------------------------------
-void PathMatching::on_configure()
+bool PathMatching::on_configure()
 try {
   PathMatchingBase::on_configure();
 
   auto path = load_param<std::string>(private_nh_, "path");
+  std::string path_dir = private_nh_.param("path_dir", std::string{});
   path_frame_id_ = load_param<std::string>(private_nh_, "path_frame_id");
   // auto wgs84_anchor = load_geodetic_coordinates(private_nh_, "wgs84_anchor");
   display_activated_ = load_param<bool>(private_nh_, "display");
+
+  if (!path.empty() && path[0] != '/') {
+    if (!path_dir.empty()) {
+      path = path_dir + '/' + path;
+    } else {
+      throw std::runtime_error(
+        "The parameter 'path_dir' is required if the 'path' is not an absolute file path");
+    }
+  }
 
   // annotation_dist_max_ = get_parameter_or(node_, "annotation_dist_max", 5.);
   // annotation_dist_min_ = get_parameter_or(node_, "annotation_dist_min", -0.5);
@@ -69,22 +77,27 @@ try {
   timer_ = private_nh_.createTimer(ros::Duration(0.1), &PathMatching::timer_callback_, this);
 
   ROS_INFO("configured");
+  return true;
+
 } catch (const std::runtime_error & e) {
   ROS_ERROR_STREAM("configuration failed: " << e.what());
+  return false;
 }
 
 //-----------------------------------------------------------------------------
-void PathMatching::on_activate()
+bool PathMatching::on_activate()
 {
-  PathMatchingBase::on_activate();
-  ROS_INFO("activated");
+  bool res = PathMatchingBase::on_activate();
+  if (res) ROS_INFO("activated");
+  return res;
 }
 
 //-----------------------------------------------------------------------------
-void PathMatching::on_deactivate()
+bool PathMatching::on_deactivate()
 {
-  PathMatchingBase::on_deactivate();
-  ROS_INFO("deactivated");
+  bool res = PathMatchingBase::on_deactivate();
+  if (res) ROS_INFO("deactivated");
+  return res;
 }
 
 //-----------------------------------------------------------------------------

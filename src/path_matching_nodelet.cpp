@@ -29,9 +29,11 @@ PathMatchingNodelet::PathMatchingNodelet()
 
 void PathMatchingNodelet::onInit()
 {
+  NODELET_INFO("onInit()");
   path_matching_ = std::make_unique<PathMatching>(getNodeHandle(), getPrivateNodeHandle());
-  path_matching_->on_configure();
-  path_matching_->on_activate();
+  if (path_matching_->on_configure()) {
+    path_matching_->on_activate();
+  }
 }
 
 }  // namespace ros1

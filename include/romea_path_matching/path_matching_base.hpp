@@ -45,9 +45,9 @@ public:
   PathMatchingBase(ros::NodeHandle & nh, ros::NodeHandle & private_nh);
   virtual ~PathMatchingBase() = default;
 
-  void on_configure();
-  void on_activate();
-  void on_deactivate();
+  bool on_configure();
+  bool on_activate();
+  bool on_deactivate();
 
   virtual void reset() = 0;
 
