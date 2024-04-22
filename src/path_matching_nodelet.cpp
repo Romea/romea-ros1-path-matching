@@ -29,7 +29,6 @@ PathMatchingNodelet::PathMatchingNodelet()
 
 void PathMatchingNodelet::onInit()
 {
-  NODELET_INFO("onInit()");
   path_matching_ = std::make_unique<PathMatching>(getNodeHandle(), getPrivateNodeHandle());
   if (path_matching_->on_configure()) {
     path_matching_->on_activate();
