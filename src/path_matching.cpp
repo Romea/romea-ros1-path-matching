@@ -23,6 +23,8 @@
 #include <romea_core_path/PathMatching2D.hpp>
 #include <romea_path_utils/path_matching_info_conversions.hpp>
 
+#include "romea_path_utils/path_builder.hpp"
+
 // #include "uturn_generator.hpp"
 // #include <romea_path_msgs/PathAnnotations.h>
 
@@ -75,6 +77,8 @@ try {
   // loadPath(path);
 
   timer_ = private_nh_.createTimer(ros::Duration(0.1), &PathMatching::timer_callback_, this);
+
+  path_sub_ = private_nh_.subscribe("path", 1, &PathMatching::process_path_, this);
 
   ROS_INFO("configured");
   return true;
@@ -150,6 +154,12 @@ void PathMatching::timer_callback_(const ros::TimerEvent &)
   auto stamp = ros::Time::now();
   auto report = path_matching_->getReport(to_romea_duration(stamp));
   diagnostics_pub_->publish(stamp, report);
+}
+
+void PathMatching::process_path_(const nav_msgs::Path & msg)
+{
+  path_matching_->setPath(create_path(msg, 1.0));
+  reset();
 }
 
 }  // namespace ros1

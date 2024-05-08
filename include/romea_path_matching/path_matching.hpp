@@ -17,6 +17,7 @@
 
 // ros
 #include <ros/ros.h>
+#include <nav_msgs/Path.h>
 
 // romea
 #include <romea_core_path_matching/PathMatching.hpp>
@@ -46,6 +47,8 @@ protected:
 
   void timer_callback_(const ros::TimerEvent & event) override;
 
+  void process_path_(const nav_msgs::Path & path);
+
 protected:
   PathMatchingDisplay display_;
   std::string path_frame_id_;
@@ -53,6 +56,8 @@ protected:
   bool display_activated_;
 
   std::unique_ptr<core::PathMatching> path_matching_;
+
+  ros::Subscriber path_sub_;
 };
 
 }  // namespace ros1
