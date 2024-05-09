@@ -78,7 +78,7 @@ try {
 
   timer_ = private_nh_.createTimer(ros::Duration(0.1), &PathMatching::timer_callback_, this);
 
-  path_sub_ = private_nh_.subscribe("path", 1, &PathMatching::process_path_, this);
+  path_sub_ = private_nh_.subscribe("input_path", 1, &PathMatching::process_path_, this);
 
   ROS_INFO("configured");
   return true;
