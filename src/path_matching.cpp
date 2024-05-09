@@ -158,7 +158,8 @@ void PathMatching::timer_callback_(const ros::TimerEvent &)
 
 void PathMatching::process_path_(const nav_msgs::Path & msg)
 {
-  path_matching_->setPath(create_path(msg, 1.0));
+  ROS_INFO("load new path");
+  path_matching_->setPath(create_path(msg, 1.0, interpolation_window_length_));
   reset();
 }
 
